@@ -5,23 +5,40 @@ let systemShortcut = [
     ["@main", "int main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    |\n    return 0;\n}\n"],
     ["@fastio", "ios_base::sync_with_stdio(false);\ncin.tie(NULL);\n|"],
     ["@for_", "for(int _ = 0; _ < |; _++) {\n    \n}"],
-    ["@sort", "sort(v.begin(), v.end()|);"],
-    ["cin >> tc", "int Tcase, tcase = 0;\ncin >> Tcase;\nwhile(tcase++ < Tcase){\n    |\n    cout << '\\n';\n}"],
+    ["@sort_", "sort(_.begin(), _.end());"],
+    ["sort(_.begin(), _.end());@", "sort(_.begin(), _.end(), greater<int>());|"],
+    ["sort(_.begin(), _.end(), greater<int>());@", "sort(_.begin(), _.end());|"],
+    ["@tc", "int Tcase, tcase = 0;\ncin >> Tcase;\nwhile(tcase++ < Tcase){\n    |\n    cout << \"\\n\";\n}"],
     ["@ufind", "vector<int> u;\nint ufind(int k){\n    if(k == u[k]){\n        return k;\n    }\n    else{\n        u[k] = ufind(u[k]);\n        return u[k];\n    }\n}|"],
+    ["@ret", "int &ret = |;\nif(ret != -1) return ret;\n\nret = ;\nreturn ret;"],
+    ["@whileq", "while(!q.empty()) {\n    int qt = q.front();\n    q.pop();\n    |\n}"],
+    ["@whilepq", "while(!pq.empty()) {\n    int qt = pq.top();\n    pq.pop();\n    |\n}"],
+    ["@vi", "vector<int>|"],
+    ["@vvi", "vector<vector<int>>|"],
+    ["@vl", "vector<long long>|"],
+    ["@vvl", "vector<vector<long long>>|"],
+    ["@vs", "vector<string>|"],
+    ["@vvs", "vector<vector<string>>|"],
+    ["@vpii", "vector<pair<int, int>>|"],
+    ["@vvpii", "vector<vector<pair<int, int>>>|"],
+    ["@q", "queue<int>|"],
+    ["@pq", "priority_queue<int>|"],
+    ["priority_queue<int>@", "priority_queue<int, vector<int>, greater<int>>|"],
+    ["priority_queue<int, vector<int>, greater<int>>@", "priority_queue<int>|"],
+    ["@mn", "mn = min(mn, |);"],
+    ["@mx", "mx = max(mx, |);"],
+    ["@mp", "make_pair(|, )"],
+    ["@nck", "vector<vector<int>> nck_dp(100 - 3, vector<int>((100 >> 1) - 1, -1));\nint nck(int n, int k) {\n    k = min(k, n - k);\n    if(!k) return 1;\n    if(k == 1) return n;\n    int &ret = nck_dp[n-4][k-2];\n    if(ret != -1) return ret;\n    ret = nck(n-1, k-1) + nck(n-1, k);\n    ret %= 1000000007;\n    return ret;\n}\n|"],
+    ["@kmp", "string A;\nstring B;\nint a = A.size(), b = B.size();\nvector<int> pi(a);\nint x;\nx = 0;\nfor(int i = 1; i < a; i++) {\n    while(x && A[x] != A[i]) x = pi[x - 1];\n    if(A[x] == A[i]) pi[i] = ++x;\n}\nx = 0;\nfor(int i = 0; i < b; i++) {\n    while(x && A[x] != B[i]) x = pi[x - 1];\n    if(A[x] == B[i]) {\n        ++x;\n        if(x == a) {\n            cout << i - x + 1;\n            x = pi[x - 1];\n        }\n    }\n}\n"],
+    ["@kruskal", "sort(v.begin(), v.end());\nfor(int i = 0; i < len; i++) {\n    int a = ufind(v[i][1]);\n    int b = ufind(v[i][2]);\n    if(a == b) continue;\n    u[a] = b;\n    ans += v[i][0];\n}\n"],
     ["break", "break|;"],
     ["continue", "continue|;"],
-    ["return ", "return |;"],
+    ["return", "return|;"],
     ["cin>>", "cin >> |;"],
     ["cin >>", "cin >> |;"],
     ["cout<<", "cout << |;"],
     ["cout <<", "cout << |;"],
     ["<< endl", "<< \"\\n\"|"],
-    ["int &ret", "int &ret = |;\nif(ret != -1) return ret;\n\nret = ;\nreturn ret;"],
-    ["int& ret", "int &ret = |;\nif(ret != -1) return ret;\n\nret = ;\nreturn ret;"],
-    ["long long &ret", "long long &ret = |;\nif(ret != -1) return ret;\n\nret = ;\nreturn ret;"],
-    ["long long& ret", "long long &ret = |;\nif(ret != -1) return ret;\n\nret = ;\nreturn ret;"],
-    ["^while(!q.empty)", "while(!q.empty()) {\n    int qt = q.front();\n    q.pop();\n    |\n}"],
-    ["^while(!pq.empty)", "while(!pq.empty()) {\n    int qt = pq.top();\n    pq.pop();\n    |\n}"],
     ["(", "(|)"],
     ["[", "[|]"],
     ["{", "{|}"],
@@ -101,6 +118,8 @@ let shortcutBefore = new Array();
 let shortcutAfter = new Array();
 let historyBook = new Array();
 let historyBookTogo = new Array();
+let historyPoint = new Array();
+let historyPointTogo = new Array();
 
 function indent(idx) {
     let ret = "";
@@ -161,8 +180,9 @@ function autoReplace(idx) {
         let sAfter = shortcutAfter[ix];
         let selectionMove = 0;
         sAfter = sAfter.replace(/\n/g, "\n" + indent(idx));
+        let curidx = 0;
         if(sBefore.indexOf("_") > -1) {
-            while(sAfter.indexOf("_") > -1){
+            while(sAfter.indexOf("_", curidx++) > -1){
                 sAfter = sAfter.replace("_", paper.value[idx - sBefore.length + sBefore.indexOf("_") + 1]);
             }
         }
@@ -176,6 +196,10 @@ function autoReplace(idx) {
         paper.value = paper.value.substring(0, idx - sBefore.length + 1) + sAfter + paper.value.substring(idx + 1);
         paper.selectionStart = idx + selectionMove + 1;
         paper.selectionEnd = idx + selectionMove + 1;
+        justbefore = true;
+    }
+    else {
+        justbefore = false;
     }
 }
 
@@ -195,6 +219,8 @@ window.onload = function() {
         undoBtn.style.filter = '';
     }
     if(historyBook.length > 5) historyBook.shift();
+    historyPoint.push(0);
+    if(historyPoint.length > 5) historyPoint.shift();
     lastLength = paper.value.length;
     colorful();
     
@@ -234,17 +260,20 @@ document.getElementById("paper").addEventListener("keyup", function (event) {
 });
 
 document.getElementById("paper").addEventListener("mouseup", function (event) {
+    justbefore = false;
     setTimeout(function(){
         highlight(paper.selectionStart, paper.selectionEnd);
     }, 10);
 });
 
 document.getElementById("paper").addEventListener("touchend", function (event) {
+    justbefore = false;
     setTimeout(function(){
         highlight(paper.selectionStart, paper.selectionEnd);
     }, 10);
 });
 
+let justbefore = false;
 document.getElementById("paper").addEventListener("keydown", function (event) {
     if(event.key == ";" || event.key == ")" || event.key == "]" || event.key == "}") {
         if(paper.selectionStart == paper.selectionEnd) {
@@ -273,13 +302,20 @@ document.getElementById("paper").addEventListener("keydown", function (event) {
                 filename.value = '';
                 localStorage.setItem("fname", filename.value);
                 historyBookTogo = new Array();
+                historyPointTogo = new Array();
                 historyBook.push(paper.value);
+                historyPoint.push(paper.selectionStart);
                 if(historyBook.length > 1) {
                     undoBtn.style.opacity = '';
                     undoBtn.style.filter = '';
                 }
                 if(historyBook.length > 5) historyBook.shift();
                 colorful();
+            }
+            if(justbefore) {
+                event.preventDefault();
+                undo();
+                justbefore = false;
             }
         }
     }
@@ -384,6 +420,19 @@ document.getElementById("paper").addEventListener("keydown", function (event) {
                         colorful();
                     }
                 }
+                else {
+                    if("]})".indexOf(paper.value[paper.selectionStart]) > -1) {
+                        paper.selectionStart++;
+                        paper.selectionEnd = paper.selectionStart;
+                    }
+                    else {
+                        if(paper.value[paper.selectionStart] != "\n") {
+                            paper.selectionStart = paper.value.indexOf("\n", paper.selectionStart + 1);
+                        }
+                        paper.selectionStart = paper.value.indexOf("\n", paper.selectionStart + 1);
+                        paper.selectionEnd = paper.selectionStart;
+                    }
+                }
             }
             else {
                 let idxStart = paper.selectionStart;
@@ -486,6 +535,7 @@ document.getElementById("paper").addEventListener("keydown", function (event) {
         event.preventDefault();
         redo();
     }
+    justbefore = false;
 });
 
 function undo() {
@@ -495,10 +545,14 @@ function undo() {
         return 0;
     }
     historyBookTogo.push(historyBook[historyBook.length - 1]);
+    historyPointTogo.push(historyPoint[historyPoint.length - 1]);
     redoBtn.style.opacity = '';
     redoBtn.style.filter = '';
     paper.value = historyBook[historyBook.length - 2];
+    paper.selectionStart = historyPoint[historyBook.length - 2];
+    paper.selectionEnd = historyPoint[historyBook.length - 2];
     historyBook.pop();
+    historyPoint.pop();
     colorful();
     if(historyBook.length == 1) {
         undoBtn.style.filter = "grayscale(1)";
@@ -513,12 +567,16 @@ function redo() {
         return 0;
     }
     historyBook.push(historyBookTogo[historyBookTogo.length - 1]);
+    historyPoint.push(historyPointTogo[historyPointTogo.length - 1]);
     if(historyBook.length > 1) {
         undoBtn.style.opacity = '';
         undoBtn.style.filter = '';
     }
     paper.value = historyBookTogo[historyBookTogo.length - 1];
+    paper.selectionStart = historyPointTogo[historyBookTogo.length - 1];
+    paper.selectionEnd = historyPointTogo[historyBookTogo.length - 1];
     historyBookTogo.pop();
+    historyPointTogo.pop();
     colorful();
     if(historyBookTogo.length == 0) {
         redoBtn.style.filter = "grayscale(1)";
@@ -584,15 +642,19 @@ window.ondrop=function(event){
     reader.onload=function(e){
         paper.value = e.target.result;
         historyBookTogo = new Array();
+        historyPointTogo = new Array();
         historyBook.push(paper.value);
+        historyBook.push(paper.selectionStart);
         if(historyBook.length > 1) {
             undoBtn.style.opacity = '';
             undoBtn.style.filter = '';
         }
         if(historyBook.length > 5) historyBook.shift();
+        if(historyPoint.length > 5) historyPoint.shift();
         colorful();
     }
     reader.readAsText(event.dataTransfer.files[0]);
+    justbefore = false;
     if(event.dataTransfer.files[0].name.substring(event.dataTransfer.files[0].name.length - 4) == ".cpp") {
         filename.value = event.dataTransfer.files[0].name.substring(0, event.dataTransfer.files[0].name.length - 4);
     }
@@ -608,15 +670,19 @@ function openFile(event){
         reader.onload = function(e){
             paper.value = e.target.result;
             historyBookTogo = new Array();
+            historyPointTogo = new Array();
             historyBook.push(paper.value);
+            historyPoint.push(paper.selectionStart);
             if(historyBook.length > 1) {
                 undoBtn.style.opacity = '';
                 undoBtn.style.filter = '';
             }
             if(historyBook.length > 5) historyBook.shift();
+            if(historyPoint.length > 5) historyPoint.shift();
             colorful();
         }
         reader.readAsText(filePicker.files[0]);
+        justbefore = false;
         if(filePicker.files[0].name.substring(filePicker.files[0].name.length - 4) == ".cpp") {
             filename.value = filePicker.files[0].name.substring(0, filePicker.files[0].name.length - 4);
         }
@@ -667,12 +733,15 @@ document.getElementById("paper").addEventListener("input", function(e) {
         autoReplace(paper.selectionStart - 1);
     }
     historyBookTogo = new Array();
+    historyPointTogo = new Array();
     historyBook.push(paper.value);
+    historyPoint.push(paper.selectionStart);
     if(historyBook.length > 1) {
         undoBtn.style.opacity = '';
         undoBtn.style.filter = '';
     }
     if(historyBook.length > 5) historyBook.shift();
+    if(historyPoint.length > 5) historyPoint.shift();
     colorful();
 });
 
