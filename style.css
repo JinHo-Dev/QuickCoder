@@ -1,0 +1,334 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    resize: none;
+    outline: none;
+    overflow: hidden;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-family: 'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono', Menlo, Consolas, monospace;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+body {
+    overscroll-behavior-y: none;
+}
+
+#caption {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 44px;
+    width: 100%;
+    background: #fff;
+    background-repeat: repeat-x;
+    background-position: bottom left;
+    background-size: 1px 1px;
+    background-image: url("light_line.png");
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 1;
+}
+
+#caption > button {
+    height: 36px;
+    font-size: 17px;
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic', '맑은고딕', 'SF', sans-serif;
+    color: #09f;
+    margin-top: 4px;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0);
+    background-repeat: no-repeat;
+    background-position: center center;
+    line-height: 0;
+    transition-duration: 0.1s;
+    box-sizing: content-box;
+}
+
+@media (any-pointer: fine) {
+    #caption > button:hover {
+        background-color: rgba(180,180,190,0.2);
+    }
+    
+    #caption > button:active {
+        height: 32px;
+        margin-top: 6px;
+        background-color: rgba(180,180,190,0.4);
+    }
+}
+
+#openBtn {
+    float: left;
+    width: 60px;
+}
+
+#downBtn {
+    float: left;
+    width: 60px;
+}
+
+#settingBtn {
+    float: left;
+    width: 60px;
+}
+
+#undoBtn {
+    float: right;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background-position: 12px center !important;
+    background-size: 20px 20px;
+    background-image: url("prev.svg");
+    width: 40px;
+}
+
+#redoBtn {
+    float: right;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    background-position: 8px center !important;
+    margin-right: 40px;
+    background-size: 20px 20px;
+    background-image: url("next.svg");
+    width: 40px;
+}
+
+#runBtn {
+    float: right;
+    background-size: 20px 20px;
+    background-image: url("playbtn.svg");
+    width: 60px;
+}
+
+#filename {
+    position: absolute;
+    height: 36px;
+    width: calc(100% - 500px);
+    max-width: 400px;
+    left: max(50% - 200px, 250px);
+    margin-top: 4px;
+    background: rgba(0,0,0,0);
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic', '맑은고딕', 'SF', sans-serif;
+    color: #333;
+    text-align: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 10px;
+}
+
+#filename:hover {
+    background: rgba(180,180,190,0.15);
+}
+
+#filename:focus {
+    background: rgba(180,180,190,0.15);
+    border: 1px solid rgba(180,180,190,0.4);
+}
+
+#filename::placeholder {
+  color: rgba(110,110,110,0.6);
+}
+
+#filename:focus::placeholder {
+  color: rgba(110,110,110,0);
+}
+
+#cover {
+    position: fixed;
+    top: 44px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 44px);
+    overflow: auto;
+}
+
+#lineHighlight {
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    background: #eee;
+}
+
+#lineNumber {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    width: 20px;
+    font-size: 12px;
+    line-height: 25px;
+    text-align: right;
+    color: #999;
+}
+
+#paper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    padding-left: 40px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+    background-color: rgba(0,0,0,0);
+    opacity: 0.3;
+    font-size: 16px;
+    line-height: 25px;
+}
+
+#runModal {
+    position: fixed;
+    top: 44px;
+    right: 0;
+    height: calc(100% - 44px);
+    width: 500px;
+    display: none;
+    background-color: rgba(250, 250, 250, 0.8);
+    box-shadow: -10px 0px 30px rgba(50, 50, 50, 0.1);
+    overflow-y: auto;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+#stdin {
+    position: relative;
+    top: 0;
+    right: 0;
+    height: 115px;
+    width: 500px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px rgba(50, 50, 50, 0.1);
+    font-size: 16px;
+    line-height: 25px;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+#cpuTime {
+    position: relative;
+    width: 200px;
+    float: left;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 20px;
+    height:25px;
+}
+
+#memory {
+    position: relative;
+    width: 200px;
+    float: right;
+    text-align: right;
+    padding-right: 20px;
+    font-size: 14px;
+    line-height: 20px;
+    height:25px;
+}
+
+#output {
+    position: relative;
+    top: 0;
+    right: 0;
+    overflow-y: visible;
+    overflow-x: hidden;
+    width: 500px;
+    padding: 20px;
+    font-size: 16px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 25px;
+}
+
+.sh_cpp {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    padding-left: 40px;
+    padding-bottom: 80px;
+    padding-right: 20px;
+    font-size: 16px;
+    line-height: 25px;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #333;
+    }
+    
+    #caption {
+        background-color: #000;
+        background-image: url("dark_line.png");
+    }
+
+    #filename {
+        color: #ddd;
+    }
+    
+    #cover {
+        background: #333;
+    }
+
+    #lineHighlight {
+        background: #494949;
+    }
+    
+    #paper {
+        color: #eee;
+    }
+    
+    #runModal {
+        background-color: rgba(70, 70, 70, 0.8);
+        box-shadow: -5px 0px 20px rgba(0, 0, 0, 0.3);
+        color: #eee;
+    }
+    
+    #stdin {
+        background-color: #333;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        color: #eee;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    #filename {
+        width: calc(100% - 420px);
+        left: 210px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #filename {
+        display: none;
+    }
+    #runModal {
+        width: 400px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    #runModal {
+        width: 350px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    #runModal {
+        width: 300px;
+    }
+    #undoBtn {
+        display: none;
+    }
+    #redoBtn {
+        display: none;
+    }
+}

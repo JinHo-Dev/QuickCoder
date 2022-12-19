@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="Imagetoolbar" content="no">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+<meta name="Description" content="QuickCoder">
+<link rel="apple-touch-icon-precomposed" href="icon.png">
+<script type="text/javascript" src="sh_main.min.js"></script>
+<script type="text/javascript" src="sh_cpp.min.js"></script>
+<link type="text/css" rel="stylesheet" href="sh_style.css?124">
+<link type="text/css" rel="stylesheet" href="style.css?124">
+<title>QuickCoder</title>
+</head>
+<body>
+    <div id="caption" onselectstart="return false;">
+        <button id="openBtn" onclick="filePicker.click()">열기</button>
+        <button id="downBtn" onclick="filePaper()">저장</button>
+        <button id="settingBtn" onclick="openSettings()">설정</button>
+
+        <input type="text" id="filename" aria-label="file name" placeholder="source">
+
+        <button id="runBtn" onclick="runTrigger()"></button>
+        <button id="redoBtn" style="filter:grayscale(1);opacity:0.5;" onclick="redo()"></button>
+        <button id="undoBtn" style="filter:grayscale(1);opacity:0.5;" onclick="undo()"></button>
+    </div>
+    <div id="cover">
+        <div id="lineHighlight"></div>
+        <div id="lineNumber"></div>
+        <pre class="sh_cpp"></pre>
+        <textarea id="paper" aria-label="your code"></textarea>
+    </div>
+    <div id="runModal">
+        <textarea id="stdin" aria-label="standard input"></textarea>
+        <div id="cpuTime"></div>
+        <div id="memory"></div>
+        <pre id="output"></pre>
+    </div>
+</body>
+<textarea id="shortcuts" hidden aria-label="your shorcuts"></textarea>
+<input type="file" id="filePicker" aria-label="select file" style="display:none;" accept=".cpp, .c, .js, .css, .py, .java, .txt, .html, .xml, .py3, .python" onchange="openFile(event);">
+<script type="text/javascript" src="script.js?20221122_018"></script>
+</html>
