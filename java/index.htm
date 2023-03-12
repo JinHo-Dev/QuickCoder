@@ -42,8 +42,22 @@
         <div id="memory"></div>
         <pre id="output"></pre>
     </div>
+    <div id="touchbar">
+        <button onclick="tab(new CustomEvent('keydown'));" style="width: 60px;">tab</button>
+        <button onclick="insert('<'); autoReplace(paper.selectionStart-1); doo();">&lt;</button>
+        <button onclick="insert('>'); autoReplace(paper.selectionStart-1); doo();">&gt;</button>
+        <button onclick="insert('['); autoReplace(paper.selectionStart-1); doo();">[</button>
+        <button onclick="insert(']'); autoReplace(paper.selectionStart-1); doo();">]</button>
+        <button onclick="insert('{'); autoReplace(paper.selectionStart-1); doo();">{</button>
+        <button onclick="insert('}'); autoReplace(paper.selectionStart-1); doo();">}</button>
+        <button onclick="insert('^'); autoReplace(paper.selectionStart-1); doo();">^</button>
+        <button onclick="insert('|'); autoReplace(paper.selectionStart-1); doo();">|</button>
+        <button onclick="insert('~'); autoReplace(paper.selectionStart-1); doo();">~</button>
+        <button onclick="insert('_'); autoReplace(paper.selectionStart-1); doo();">_</button>
+    </div>
 </body>
 <textarea id="shortcuts" hidden aria-label="your shorcuts"></textarea>
 <input type="file" id="filePicker" aria-label="select file" style="display:none;" accept=".cpp, .c, .js, .css, .py, .java, .txt, .html, .xml, .py3, .python" onchange="openFile(event);">
 <script type="text/javascript" src="script.js?20221229_021"></script>
+<script type="text/javascript" src="autoreplace.js?20221229_021"></script>
 </html>

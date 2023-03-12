@@ -19,6 +19,28 @@ body {
     overscroll-behavior-y: none;
 }
 
+#touchbar {
+    padding-left: 10px;
+    position: fixed;
+    background: #D1D5DB;
+    width: 100%;
+    left:0;
+}
+
+#touchbar > button {
+    position: relative;
+    top: 8px;
+    height: 44px;
+    width: 32px;
+    background: #FFF;
+    border-radius: 4px;
+    box-shadow: 0px 1px 0px #888;
+    color: #111;
+    font-weight: normal;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
 #caption {
     position: fixed;
     top: 0;

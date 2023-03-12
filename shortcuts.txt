@@ -596,7 +596,6 @@ function openSettings() {
 function colorful() {
     localStorage.setItem("paper", paper.value);
     document.getElementsByClassName("sh_cpp")[0].innerText = paper.value;
-console.log(1);
     sh_highlightDocument();
     paperResize();
     lastLength = paper.value.length;
